@@ -17,4 +17,6 @@ func InitBookRouter(router *gin.Engine, db *sqlx.DB) {
 	bookRouter.GET("", bookHandler.GetBooks)
 	// localhost:8000/book/new
 	bookRouter.POST("/new", middleware.CheckToken, bookHandler.CreateBooks)
+	// localhost:8000/book/:id
+	bookRouter.GET("/:id", middleware.CheckToken, bookHandler.GetOneBook)
 }

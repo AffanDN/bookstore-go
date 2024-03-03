@@ -5,6 +5,7 @@ import (
 	"bookstore/internals/repositories"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -60,6 +61,27 @@ func (b *BookHandler) CreateBooks(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": "Success Save Book",
+		"data":    result,
+	})
+}
+func (b *BookHandler) GetOneBook(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	result, err := b.FindOneBook(id)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	if len(result) == 0 {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"messages": "book not found",
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Success Get 1 Book",
 		"data":    result,
 	})
 }
