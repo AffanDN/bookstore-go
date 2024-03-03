@@ -48,3 +48,10 @@ func (b *BookRepo) DeleteBookById(id int) error {
 	}
 	return nil
 }
+func (b *BookRepo) UpdateBookById(id int, body models.BookModel) error {
+	query := "update books set title=?, description=?, author=? where id=?"
+	if _, err := b.Exec(query, body.Title, body.Description, body.Author, id); err != nil {
+		return err
+	}
+	return nil
+}

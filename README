@@ -1,0 +1,2 @@
+go run ./cmd/main.go -> buat jalanin file mainnya
+go run . -> buat jalanin semuanya

@@ -21,4 +21,6 @@ func InitBookRouter(router *gin.Engine, db *sqlx.DB) {
 	bookRouter.GET("/:id", middleware.CheckToken, bookHandler.GetOneBook)
 	// localhost:8000/book/delete/id
 	bookRouter.DELETE("/delete/:id", middleware.CheckToken, bookHandler.DeleteBook)
+	// localhost:8000/book/update/id
+	bookRouter.PATCH("/update/:id", middleware.CheckToken, bookHandler.UpdateBook)
 }

@@ -113,3 +113,40 @@ func (b *BookHandler) DeleteBook(ctx *gin.Context) {
 		"data":    result,
 	})
 }
+func (b *BookHandler) UpdateBook(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	body := models.BookModel{}
+	if err := ctx.ShouldBind(&body); err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	result, err := b.FindOneBook(id)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	if len(result) == 0 {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"messages": "book not found",
+		})
+		return
+	}
+	if err := b.UpdateBookById(id, body); err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Success Update Book",
+		"data":    result,
+	})
+}
