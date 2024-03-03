@@ -41,3 +41,10 @@ func (b *BookRepo) FindOneBook(id int) ([]models.BookModel, error) {
 	}
 	return result, nil
 }
+func (b *BookRepo) DeleteBookById(id int) error {
+	query := "delete from books where id=?"
+	if _, err := b.Exec(query, id); err != nil {
+		return err
+	}
+	return nil
+}

@@ -85,3 +85,31 @@ func (b *BookHandler) GetOneBook(ctx *gin.Context) {
 		"data":    result,
 	})
 }
+func (b *BookHandler) DeleteBook(ctx *gin.Context) {
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	result, err := b.FindOneBook(id)
+	if err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	if len(result) == 0 {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"messages": "book not found",
+		})
+		return
+	}
+	if err := b.DeleteBookById(id); err != nil {
+		log.Println(err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Delete was Success",
+		"data":    result,
+	})
+}
